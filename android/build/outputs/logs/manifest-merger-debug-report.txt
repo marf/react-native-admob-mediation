@@ -1,0 +1,55 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+	package
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:4:5-23
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+	xmlns:tools
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:1-307:12
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:6:5-67
+	android:name
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:6:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:7:5-79
+	android:name
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:7:22-76
+application
+ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:9:5-306:19
+uses-library#org.apache.http.legacy
+ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:10:9-12:40
+	android:required
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:12:13-37
+	android:name
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml:11:13-50
+uses-sdk
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+		ADDED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml
+		INJECTED from /Users/marco/eSound/node_modules/react-native-appodeal-enhanced/android/src/main/AndroidManifest.xml

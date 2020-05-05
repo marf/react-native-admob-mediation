@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+    }
+    lintOptions {
+        abortOnError false
+        warning 'InvalidPackage'
+    }
+    dexOptions {
+        javaMaxHeapSize "2g"
+    }
+}
+
+repositories {
+    jcenter() 
+    mavenCentral()
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "aar", include: ["*.aar"])
+    implementation 'com.facebook.react:react-native:+'
+
+    implementation ('com.appodeal.ads:sdk:2.6.2.+') {
+        exclude module: 'retrofit'
+        exclude module: 'okhttp'
+        exclude module: 'okio'
+    }
+}

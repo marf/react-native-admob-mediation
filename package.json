@@ -1,0 +1,62 @@
+{
+  "_args": [
+    [
+      "git+https://github.com/marf/react-native-admob-mediation.git",
+      "E:\\eSound"
+    ]
+  ],
+  "_from": "git+https://github.com/marf/react-native-admob-mediation.git",
+  "_id": "react-native-admob-mediation@1.0.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/react-native-admob-mediation",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "react-native-admob-mediation@git+https://github.com/marf/react-native-admob-mediation.git",
+    "name": "react-native-admob-mediation",
+    "escapedName": "react-native-admob-mediation",
+    "rawSpec": "git+https://github.com/marf/react-native-admob-mediation.git",
+    "saveSpec": "git+https://github.com/marf/react-native-admob-mediation.git",
+    "fetchSpec": "https://github.com/marf/react-native-admob-mediation.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/marf/react-native-admob-mediation.git#dab31e91342d12e623c8853f19e81fdf98a2909a",
+  "_shasum": "bf793d1f6bb2774c35840d430516b4988b813d60",
+  "_spec": "react-native-admob-mediation@git+https://github.com/marf/react-native-admob-mediation.git",
+  "_where": "/Users/marco/eSound",
+  "author": {
+    "name": "Marf"
+  },
+  "bugs": {
+    "url": "https://github.com/marf/react-native-admob-mediation/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "React Native Module created to support Admob mediation SDK for iOS and Android platforms",
+  "homepage": "https://esound.app",
+  "keywords": [
+    "react",
+    "react-native",
+    "react-component",
+    "appodeal",
+    "monetisation",
+    "android",
+    "ios",
+    "ads"
+  ],
+  "license": "Marf",
+  "main": "index.js",
+  "name": "react-native-admob-mediation",
+  "peerDependencies": {
+    "react-native": ">=0.44.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marf/react-native-admob-mediation.git"
+  },
+  "version": "1.0.0"
+}
