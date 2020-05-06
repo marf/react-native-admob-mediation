@@ -87,24 +87,30 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 		});
 	}
 
-	private void createAndLoadRewardedVideo(String adUnitId){
-		rewardedAd = new RewardedAd(reactContext, adUnitId);
-
-		RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+	private void createAndLoadRewardedVideo(final String adUnitId){
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
-			public void onRewardedAdLoaded() {
-				sendEventToJS("onRewardedVideoLoaded", null);
-			}
+			public void run() {
+				rewardedAd = new RewardedAd(reactContext, adUnitId);
 
-			@Override
-			public void onRewardedAdFailedToLoad(int errorCode) {
-				WritableMap params = Arguments.createMap();
-				params.putInt("errorCode", errorCode);
+				RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+					@Override
+					public void onRewardedAdLoaded() {
+						sendEventToJS("onRewardedVideoLoaded", null);
+					}
 
-				sendEventToJS("onRewardedVideoFailedToLoad", params);
+					@Override
+					public void onRewardedAdFailedToLoad(int errorCode) {
+						WritableMap params = Arguments.createMap();
+						params.putInt("errorCode", errorCode);
+
+						sendEventToJS("onRewardedVideoFailedToLoad", params);
+					}
+				};
+				rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
 			}
-		};
-		rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
+		});
+
 	}
 
 	@ReactMethod
