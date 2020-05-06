@@ -13,7 +13,7 @@ const REWARDED_VIDEO        = 1 << 1;
 const eventEmitter = new NativeEventEmitter(RNAdmobMediation);
 
 const eventHandlers = {
-  onSdkInitialized: 'onSdkInitialized',
+  onSdkInitialized: "onSdkInitialized",
 
   onInterstitialLoaded: "onInterstitialLoaded",
   onInterstitialShown: "onInterstitialShown",
@@ -21,6 +21,9 @@ const eventHandlers = {
   onInterstitialWillDismissScreen: "onInterstitialWillDismissScreen",
   onInterstitialDismissed: "onInterstitialDismissed",
   onInterstitialWillLeaveApplication: "onInterstitialWillLeaveApplication",
+
+  //android
+  onInterstitialClicked: "onInterstitialClicked",
 
   onRewardedVideoLoaded: "onRewardedVideoLoaded",
   onRewardedVideoFailedToLoad: "onRewardedVideoFailedToLoad",
