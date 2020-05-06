@@ -1,9 +1,20 @@
 package com.marf;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.SparseArray;
+
+import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.BaseActivityEventListener;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 import com.facebook.react.bridge.Arguments;
 
@@ -20,6 +31,9 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
+import static android.app.Activity.RESULT_OK;
+import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
+
 public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 
 	private final ReactApplicationContext reactContext;
@@ -33,7 +47,6 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	public RNAdmobMediationModule(ReactApplicationContext reactContext) {
 		super(reactContext);
 		this.reactContext = reactContext;
-		initialize();
 	}
 
 	@Override
@@ -41,43 +54,48 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 		return "RNAdmobMediation";
 	}
 
-	private void createAndLoadInterstitial(String adUnitId){
-		mInterstitialAd = new InterstitialAd(reactContext);
-		mInterstitialAd.setAdUnitId(adUnitId);
-		mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-		mInterstitialAd.setAdListener(new AdListener() {
+	private void createAndLoadInterstitial(final String adUnitId){
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
-			public void onAdLoaded() {
-				sendEventToJS("onInterstitialLoaded", null);
-			}
+			public void run () {
+				mInterstitialAd = new InterstitialAd(reactContext);
+				mInterstitialAd.setAdUnitId(adUnitId);
+				mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
-			@Override
-			public void onAdFailedToLoad(int errorCode) {
-				WritableMap params = Arguments.createMap();
-				params.putInt("errorCode", errorCode);
+				mInterstitialAd.setAdListener(new AdListener() {
+					@Override
+					public void onAdLoaded() {
+						sendEventToJS("onInterstitialLoaded", null);
+					}
 
-				sendEventToJS("onInterstitialFailedShown", params);
-			}
+					@Override
+					public void onAdFailedToLoad(int errorCode) {
+						WritableMap params = Arguments.createMap();
+						params.putInt("errorCode", errorCode);
 
-			@Override
-			public void onAdOpened() {
-				sendEventToJS("onInterstitialShown", null);
-			}
+						sendEventToJS("onInterstitialFailedShown", params);
+					}
 
-			@Override
-			public void onAdClicked() {
-				sendEventToJS("onInterstitialClicked", null);
-			}
+					@Override
+					public void onAdOpened() {
+						sendEventToJS("onInterstitialShown", null);
+					}
 
-			@Override
-			public void onAdLeftApplication() {
-				sendEventToJS("onInterstitialWillLeaveApplication", null);
-			}
+					@Override
+					public void onAdClicked() {
+						sendEventToJS("onInterstitialClicked", null);
+					}
 
-			@Override
-			public void onAdClosed() {
-				sendEventToJS("onInterstitialDismissed", null);
+					@Override
+					public void onAdLeftApplication() {
+						sendEventToJS("onInterstitialWillLeaveApplication", null);
+					}
+
+					@Override
+					public void onAdClosed() {
+						sendEventToJS("onInterstitialDismissed", null);
+					}
+				});
 			}
 		});
 	}
@@ -106,70 +124,80 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	public void initialize() {
 		//Appodeal.initialize(getCurrentActivity(), appKey, adTypes);
 		//callback.invoke(true);
-		MobileAds.initialize(reactContext, new OnInitializationCompleteListener() {
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
-			public void onInitializationComplete(InitializationStatus initializationStatus) {
-				sendEventToJS("onSdkInitialized", null);
+			public void run () {
+				MobileAds.initialize(getCurrentActivity(), new OnInitializationCompleteListener() {
+					@Override
+					public void onInitializationComplete(InitializationStatus initializationStatus) {
+						sendEventToJS("onSdkInitialized",null);
+					}
+				});
+			}
+		});
+
+	}
+
+	@ReactMethod
+	public void show(final int adType, final Callback callback){
+		new Handler(Looper.getMainLooper()).post(new Runnable() {
+			@Override
+			public void run () {
+				boolean result = false;
+				if((adType & INTERSTITIAL) == 1) {
+					if (mInterstitialAd.isLoaded()) {
+						mInterstitialAd.show();
+						result = true;
+					} else {
+						result = false;
+					}
+				}
+				else if((adType & REWARDED_VIDEO) == 1){
+					if (rewardedAd.isLoaded()) {
+						RewardedAdCallback adCallback = new RewardedAdCallback() {
+							@Override
+							public void onRewardedAdOpened() {
+								sendEventToJS("onRewardedVideoPresented", null);
+							}
+
+							@Override
+							public void onRewardedAdClosed() {
+								sendEventToJS("onRewardedVideoDismissed", null);
+							}
+
+							@Override
+							public void onUserEarnedReward(@NonNull RewardItem reward) {
+								WritableMap params = Arguments.createMap();
+								params.putString("amount", reward.getType());
+								params.putInt("type", reward.getAmount());
+
+								sendEventToJS("onRewardedEarnedReward", params);
+							}
+
+							@Override
+							public void onRewardedAdFailedToShow(int errorCode) {
+								WritableMap params = Arguments.createMap();
+								params.putInt("errorCode", errorCode);
+
+								sendEventToJS("onRewardedVideoFailedToPresent", params);
+							}
+						};
+						rewardedAd.show(reactContext.getCurrentActivity(), adCallback);
+						result = true;
+					} else {
+						result = false;
+					}
+				}
+
+				if (callback != null) {
+					callback.invoke(result);
+				}
 			}
 		});
 	}
 
 	@ReactMethod
-	public void show(int adType, Callback callback){
-		boolean result = false;
-		if((adType & INTERSTITIAL) == 1) {
-			if (mInterstitialAd.isLoaded()) {
-				mInterstitialAd.show();
-				result = true;
-			} else {
-				result = false;
-			}
-		}
-		else if((adType & REWARDED_VIDEO) == 1){
-			if (rewardedAd.isLoaded()) {
-				RewardedAdCallback adCallback = new RewardedAdCallback() {
-					@Override
-					public void onRewardedAdOpened() {
-						sendEventToJS("onRewardedVideoPresented", null);
-					}
-
-					@Override
-					public void onRewardedAdClosed() {
-						sendEventToJS("onRewardedVideoDismissed", null);
-					}
-
-					@Override
-					public void onUserEarnedReward(@NonNull RewardItem reward) {
-						WritableMap params = Arguments.createMap();
-						params.putString("amount", reward.getType());
-						params.putInt("type", reward.getAmount());
-
-						sendEventToJS("onRewardedEarnedReward", params);
-					}
-
-					@Override
-					public void onRewardedAdFailedToShow(int errorCode) {
-						WritableMap params = Arguments.createMap();
-						params.putInt("errorCode", errorCode);
-
-						sendEventToJS("onRewardedVideoFailedToPresent", params);
-					}
-				};
-				rewardedAd.show(reactContext.getCurrentActivity(), adCallback);
-				result = true;
-			} else {
-				result = false;
-			}
-		}
-
-		if (callback != null) {
-			callback.invoke(result);
-		}
-	}
-
-	@ReactMethod
 	public void cache(int adType, String adUnitId){
-
 		if((adType & INTERSTITIAL) == 1)
             createAndLoadInterstitial(adUnitId);
 		else if((adType & REWARDED_VIDEO) == 1)
@@ -177,6 +205,8 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	}
 
 	private void sendEventToJS(String eventName, WritableMap params){
-		reactContext.getJSModule(RCTDeviceEventEmitter.class).emit(eventName, params);
+		reactContext
+				.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+				.emit(eventName, params);
 	}
 }
