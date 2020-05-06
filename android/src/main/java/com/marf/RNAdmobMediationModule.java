@@ -1,21 +1,13 @@
 package com.marf;
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.SparseArray;
 
-import com.facebook.react.bridge.ActivityEventListener;
-import com.facebook.react.bridge.BaseActivityEventListener;
-import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 import com.facebook.react.bridge.Arguments;
 
 import androidx.annotation.NonNull;
@@ -24,15 +16,10 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-
-import static android.app.Activity.RESULT_OK;
-import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
 
 public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 
@@ -122,18 +109,8 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void initialize() {
+		MobileAds.initialize(getCurrentActivity());
 		sendEventToJS("onSdkInitialized",null);
-		new Handler(Looper.getMainLooper()).post(new Runnable() {
-			@Override
-			public void run () {
-				MobileAds.initialize(getCurrentActivity(), new OnInitializationCompleteListener() {
-					@Override
-					public void onInitializationComplete(InitializationStatus initializationStatus) {
-					}
-				});
-			}
-		});
-
 	}
 
 	@ReactMethod
@@ -142,7 +119,7 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 			@Override
 			public void run () {
 				boolean result = false;
-				if((adType & INTERSTITIAL) == 1) {
+				if(adType == INTERSTITIAL) {
 					if (mInterstitialAd.isLoaded()) {
 						mInterstitialAd.show();
 						result = true;
@@ -150,7 +127,7 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 						result = false;
 					}
 				}
-				else if((adType & REWARDED_VIDEO) == 1){
+				else if(adType == REWARDED_VIDEO){
 					if (rewardedAd.isLoaded()) {
 						RewardedAdCallback adCallback = new RewardedAdCallback() {
 							@Override
@@ -196,9 +173,9 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void cache(int adType, String adUnitId){
-		if((adType & INTERSTITIAL) == 1)
+		if(adType == INTERSTITIAL)
             createAndLoadInterstitial(adUnitId);
-		else if((adType & REWARDED_VIDEO) == 1)
+		else if(adType == REWARDED_VIDEO)
             createAndLoadRewardedVideo(adUnitId);
 	}
 
