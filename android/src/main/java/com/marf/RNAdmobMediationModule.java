@@ -20,7 +20,7 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
-public class RNAdmobModule extends ReactContextBaseJavaModule {
+public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 
 	private final ReactApplicationContext reactContext;
 
@@ -30,7 +30,7 @@ public class RNAdmobModule extends ReactContextBaseJavaModule {
 	private InterstitialAd mInterstitialAd;
 	private RewardedAd rewardedAd;
 
-	public RNAdmobModule(ReactApplicationContext reactContext) {
+	public RNAdmobMediationModule(ReactApplicationContext reactContext) {
 		super(reactContext);
 		this.reactContext = reactContext;
 		initialize();
