@@ -115,7 +115,7 @@ RCT_EXPORT_METHOD(cache:(int)adType adUnitId:(NSString*)adUnitId) {
     dispatch_async(dispatch_get_main_queue(), ^{
         if(adType & INTERSTITIAL)
             [self createAndLoadInterstitial:adUnitId];
-        if(adType & REWARDED_VIDEO)
+        else if(adType & REWARDED_VIDEO)
             [self createAndLoadRewardedAd:adUnitId];
     });
 }
