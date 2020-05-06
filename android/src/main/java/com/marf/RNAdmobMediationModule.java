@@ -122,15 +122,13 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void initialize() {
-		//Appodeal.initialize(getCurrentActivity(), appKey, adTypes);
-		//callback.invoke(true);
+		sendEventToJS("onSdkInitialized",null);
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run () {
 				MobileAds.initialize(getCurrentActivity(), new OnInitializationCompleteListener() {
 					@Override
 					public void onInitializationComplete(InitializationStatus initializationStatus) {
-						sendEventToJS("onSdkInitialized",null);
 					}
 				});
 			}
