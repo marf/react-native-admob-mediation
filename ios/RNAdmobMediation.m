@@ -90,7 +90,7 @@ RCT_EXPORT_METHOD(initialize) {
 
 RCT_EXPORT_METHOD(show:(int)adType result:(RCTResponseSenderBlock)callback) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(adType & INTERSTITIAL){
+        if(adType == INTERSTITIAL){
             if (self.interstitial.isReady) {
               [self.interstitial presentFromRootViewController:[[UIApplication sharedApplication] keyWindow].rootViewController];
                 callback(@[@YES]);
@@ -98,7 +98,7 @@ RCT_EXPORT_METHOD(show:(int)adType result:(RCTResponseSenderBlock)callback) {
                 callback(@[@NO]);
             }
         }
-        else if(adType & REWARDED_VIDEO)
+        else if(adType == REWARDED_VIDEO)
         {
             if (self.rewardedAd.isReady) {
                 [self.rewardedAd presentFromRootViewController:[[UIApplication sharedApplication] keyWindow].rootViewController delegate:self];
@@ -113,9 +113,9 @@ RCT_EXPORT_METHOD(show:(int)adType result:(RCTResponseSenderBlock)callback) {
 
 RCT_EXPORT_METHOD(cache:(int)adType adUnitId:(NSString*)adUnitId) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(adType & INTERSTITIAL)
+        if(adType == INTERSTITIAL)
             [self createAndLoadInterstitial:adUnitId];
-        else if(adType & REWARDED_VIDEO)
+        else if(adType == REWARDED_VIDEO)
             [self createAndLoadRewardedAd:adUnitId];
     });
 }
