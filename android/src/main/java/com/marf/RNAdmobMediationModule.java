@@ -117,8 +117,8 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	public void initialize() {
 		if(this.reactContext != null) {
 			MobileAds.initialize(this.reactContext.getCurrentActivity());
-			sendEventToJS("onSdkInitialized", null);
 		}
+		sendEventToJS("onSdkInitialized", null);
 	}
 
 	@ReactMethod
