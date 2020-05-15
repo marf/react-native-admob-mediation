@@ -44,11 +44,11 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	private void createAndLoadInterstitial(final String adUnitId){
 		if(reactContext == null)
 			return;
-		
+
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run () {
-				mInterstitialAd = new InterstitialAd(reactContext);
+				mInterstitialAd = new InterstitialAd(reactContext.getCurrentActivity());
 				mInterstitialAd.setAdUnitId(adUnitId);
 				mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
@@ -97,7 +97,7 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
-				rewardedAd = new RewardedAd(reactContext, adUnitId);
+				rewardedAd = new RewardedAd(reactContext.getCurrentActivity(), adUnitId);
 
 				RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
 					@Override
