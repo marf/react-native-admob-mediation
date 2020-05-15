@@ -42,6 +42,9 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	}
 
 	private void createAndLoadInterstitial(final String adUnitId){
+		if(reactContext == null)
+			return;
+		
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run () {
@@ -88,6 +91,9 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	}
 
 	private void createAndLoadRewardedVideo(final String adUnitId){
+		if(reactContext == null)
+			return;
+
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
