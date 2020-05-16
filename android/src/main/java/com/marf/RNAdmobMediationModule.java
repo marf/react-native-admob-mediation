@@ -42,13 +42,13 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	}
 
 	private void createAndLoadInterstitial(final String adUnitId){
-		if(reactContext == null)
+		if(getReactApplicationContext() == null)
 			return;
 
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run () {
-				mInterstitialAd = new InterstitialAd(reactContext.getCurrentActivity());
+				mInterstitialAd = new InterstitialAd(getReactApplicationContext());
 				mInterstitialAd.setAdUnitId(adUnitId);
 				mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
@@ -91,13 +91,13 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	}
 
 	private void createAndLoadRewardedVideo(final String adUnitId){
-		if(reactContext == null)
+		if(getReactApplicationContext() == null)
 			return;
 
 		new Handler(Looper.getMainLooper()).post(new Runnable() {
 			@Override
 			public void run() {
-				rewardedAd = new RewardedAd(reactContext.getCurrentActivity(), adUnitId);
+				rewardedAd = new RewardedAd(getReactApplicationContext(), adUnitId);
 
 				RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
 					@Override
@@ -121,8 +121,8 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 
 	@ReactMethod
 	public void initialize() {
-		if(this.reactContext != null) {
-			MobileAds.initialize(this.reactContext.getCurrentActivity());
+		if(getReactApplicationContext() != null) {
+			MobileAds.initialize(getReactApplicationContext());
 		}
 		sendEventToJS("onSdkInitialized", null);
 	}
@@ -142,7 +142,7 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 					}
 				}
 				else if(adType == REWARDED_VIDEO){
-					if (rewardedAd.isLoaded()) {
+					if (rewardedAd.isLoaded() && getReactApplicationContext() != null) {
 						RewardedAdCallback adCallback = new RewardedAdCallback() {
 							@Override
 							public void onRewardedAdOpened() {
@@ -171,7 +171,7 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 								sendEventToJS("onRewardedVideoFailedToPresent", params);
 							}
 						};
-						rewardedAd.show(reactContext.getCurrentActivity(), adCallback);
+						rewardedAd.show(getReactApplicationContext().getCurrentActivity(), adCallback);
 						result = true;
 					} else {
 						result = false;
@@ -194,7 +194,10 @@ public class RNAdmobMediationModule extends ReactContextBaseJavaModule {
 	}
 
 	private void sendEventToJS(String eventName, WritableMap params){
-		reactContext
+		if(getReactApplicationContext() == null)
+			return;
+		
+		getReactApplicationContext()
 				.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
 				.emit(eventName, params);
 	}
