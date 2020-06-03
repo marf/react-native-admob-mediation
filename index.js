@@ -5,4 +5,4 @@ import {
 
 import Admob from './admob';
 
-module.exports = { Admob };
+module.exports = Admob;
