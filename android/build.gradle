@@ -36,4 +36,5 @@ dependencies {
     implementation 'com.google.ads.mediation:tapjoy:12.4.2.0'
     implementation 'com.google.ads.mediation:unity:3.4.2.2'
     implementation 'com.google.ads.mediation:vungle:6.5.3.0'
+    implementation 'com.google.ads.mediation:ironsource:6.16.2.0'
 }
