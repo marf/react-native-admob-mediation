@@ -24,6 +24,7 @@ Pod::Spec.new do |s|
   s.dependency 'GoogleMobileAdsMediationMoPub'
   s.dependency 'GoogleMobileAdsMediationFacebook'
   s.dependency 'GoogleMobileAdsMediationTapjoy'
+  s.dependency 'GoogleMobileAdsMediationIronSource'
 
   #s.dependency "others"
 
