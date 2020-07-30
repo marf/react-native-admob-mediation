@@ -19,7 +19,6 @@ Pod::Spec.new do |s|
   s.dependency "React"
   s.dependency 'Google-Mobile-Ads-SDK'
   s.dependency 'GoogleMobileAdsMediationAppLovin'
-  s.dependency 'GoogleMobileAdsMediationVungle'
   s.dependency 'GoogleMobileAdsMediationUnity'
   s.dependency 'GoogleMobileAdsMediationMoPub'
   s.dependency 'GoogleMobileAdsMediationFacebook'
