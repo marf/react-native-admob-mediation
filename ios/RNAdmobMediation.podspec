@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://esound.app"
   s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
-  s.author             = { "author" => "marco@spicysparks.ocm" }
+  s.author             = { "author" => "marco@spicysparks.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/marf/react-native-admob-mediation.git", :tag => "master" }
   s.source_files  = "*.{h,m}"
