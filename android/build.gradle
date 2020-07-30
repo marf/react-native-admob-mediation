@@ -28,13 +28,11 @@ dependencies {
     implementation fileTree(dir: "aar", include: ["*.aar"])
     implementation 'com.facebook.react:react-native:+'
 
-    implementation 'com.google.android.gms:play-services-ads:19.1.0'
-    //implementation 'com.google.ads.mediation:adcolony:4.1.4.1'
-    implementation 'com.google.ads.mediation:applovin:9.11.4.0'
-    implementation 'com.google.ads.mediation:facebook:5.8.0.0'
-    implementation 'com.google.ads.mediation:mopub:5.11.1.1'
-    implementation 'com.google.ads.mediation:tapjoy:12.4.2.0'
-    implementation 'com.google.ads.mediation:unity:3.4.2.2'
-    implementation 'com.google.ads.mediation:vungle:6.5.3.0'
-    implementation 'com.google.ads.mediation:ironsource:6.16.2.0'
+    implementation 'com.google.android.gms:play-services-ads:+'
+    implementation 'com.google.ads.mediation:applovin:+'
+    implementation 'com.google.ads.mediation:facebook:+'
+    implementation 'com.google.ads.mediation:mopub:+'
+    implementation 'com.google.ads.mediation:tapjoy:+'
+    implementation 'com.google.ads.mediation:unity:+'
+    implementation 'com.google.ads.mediation:ironsource:+'
 }
