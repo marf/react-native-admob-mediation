@@ -31,9 +31,13 @@ const eventHandlers = {
   onRewardedVideoFailedToPresent: "onRewardedVideoFailedToPresent",
   onRewardedVideoShown: "onRewardedVideoShown",
   onRewardedVideoDismissed: "onRewardedVideoDismissed",
-  onRewardedEarnedReward: "onRewardedEarnedReward"
+  onRewardedEarnedReward: "onRewardedEarnedReward",
 
-
+  onAppOpenLoaded: "onAppOpenLoaded",
+  onAppOpenFailedToLoad: "onAppOpenFailedToLoad",
+  onAppOpenFailedShown: "onAppOpenFailedShown",
+  onAppOpenDismissed: "onAppOpenDismissed",
+  onAppOpenShown: "onAppOpenShown",
 };
 
 const LogLevel = {
@@ -92,8 +96,9 @@ module.exports = {
   addEventListener,
   removeEventListener,
   removeAllListeners,
-  initialize: () => RNAdmobMediation.initialize(),
+  initialize: (appOpenEnabled, appOpenUnitId) => RNAdmobMediation.initialize(appOpenEnabled, appOpenUnitId),
   show: (adType, cb = () => {}) => RNAdmobMediation.show(adType, cb),
+  showAppOpenAd: (appOpenUnitId) => RNAdmobMediation.showAppOpenAd(appOpenUnitId),
   cache: (adType, adUnitId) => RNAdmobMediation.cache(adType, adUnitId),
   showTestScreen: () => RNAdmobMediation.showTestScreen(),
   getVersion: (cb = () => {}) => RNAdmobMediation.getVersion(cb),
