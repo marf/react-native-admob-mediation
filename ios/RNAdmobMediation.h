@@ -8,9 +8,13 @@
 
 @import GoogleMobileAds;
 
-@interface RNAdmobMediation : RCTEventEmitter <RCTBridgeModule, GADInterstitialDelegate, GADRewardedAdDelegate>
+@interface RNAdmobMediation : RCTEventEmitter <RCTBridgeModule, GADInterstitialDelegate, GADRewardedAdDelegate, GADFullScreenContentDelegate>
 
 @property(nonatomic, strong) GADInterstitial *interstitial;
 @property(nonatomic, strong) GADRewardedAd *rewardedAd;
+
+@property(nonatomic, strong) NSString *appOpenUnitId;
+@property(nonatomic) GADAppOpenAd* appOpenAd;
+@property(weak, nonatomic) NSDate *loadTime;
 
 @end
