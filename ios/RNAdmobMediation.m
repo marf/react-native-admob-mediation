@@ -25,6 +25,12 @@ static NSString *const kEventRewardedVideoFailedToPresent = @"onRewardedVideoFai
 static NSString *const kEventRewardedVideoDismissed = @"onRewardedVideoDismissed";
 static NSString *const kEventRewardedVideoEarnedReward = @"onRewardedEarnedReward";
 
+static NSString *const kEventAppOpenLoaded = @"onAppOpenLoaded";
+static NSString *const kEventAppOpenFailedToLoad = @"onAppOpenFailedToLoad";
+static NSString *const kEventAppOpenFailedShown = @"onAppOpenFailedShown";
+static NSString *const kEventonAppOpenDismissed = @"onAppOpenDismissed";
+static NSString *const kEventonAppOpenShown = @"onAppOpenShown";
+
 #pragma mark implementation of plugin
 
 @implementation RNAdmobMediation
@@ -55,6 +61,32 @@ static NSString *const kEventRewardedVideoEarnedReward = @"onRewardedEarnedRewar
   self.rewardedAd = rewardedAd;
 }
 
+- (BOOL)wasLoadTimeLessThanNHoursAgo:(int)n {
+  NSDate *now = [NSDate date];
+  NSTimeInterval timeIntervalBetweenNowAndLoadTime = [now timeIntervalSinceDate:self.loadTime];
+  double secondsPerHour = 3600.0;
+  double intervalInHours = timeIntervalBetweenNowAndLoadTime / secondsPerHour;
+  return intervalInHours < n;
+}
+
+- (void)requestAppOpenAd {
+  self.appOpenAd = nil;
+  [GADAppOpenAd loadWithAdUnitID:self.appOpenUnitId
+                         request:[GADRequest request]
+                     orientation:UIInterfaceOrientationPortrait
+               completionHandler:^(GADAppOpenAd *_Nullable appOpenAd, NSError *_Nullable error) {
+                 if (error) {
+                   NSLog(@"Failed to load app open ad: %@", error);
+                   [self sendEventWithName:kEventAppOpenFailedToLoad body:[error localizedDescription]];
+                   return;
+                 }
+                 self.appOpenAd = appOpenAd;
+                 self.appOpenAd.fullScreenContentDelegate = self;
+                 self.loadTime = [NSDate date];
+                 [self sendEventWithName:kEventAppOpenLoaded body:nil];
+               }];
+}
+
 
 RCT_EXPORT_MODULE();
 
@@ -74,17 +106,46 @@ RCT_EXPORT_MODULE();
              kEventRewardedVideoDidPresent,
              kEventRewardedVideoFailedToPresent,
              kEventRewardedVideoDismissed,
-             kEventRewardedVideoEarnedReward
+             kEventRewardedVideoEarnedReward,
+             
+             kEventAppOpenLoaded,
+             kEventAppOpenFailedToLoad,
+             kEventAppOpenFailedShown,
+             kEventonAppOpenDismissed,
+             kEventonAppOpenShown
              ];
 }
 
 #pragma mark exported methods
 
-RCT_EXPORT_METHOD(initialize) {
+RCT_EXPORT_METHOD(initialize:(int)appOpenEnabled
+                  appOpenUnitId:(NSString*)appOpenUnitId) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nullable status){
             [self sendEventWithName:kEventSdkInitialized body:nil];
+            
+            if(appOpenEnabled){
+                self.appOpenUnitId = appOpenUnitId;
+                [self requestAppOpenAd];
+            }
         }];
+    });
+}
+
+RCT_EXPORT_METHOD(showAppOpenAd:(NSString*)appOpenUnitId) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        GADAppOpenAd *ad = self.appOpenAd;
+          self.appOpenAd = nil;
+
+          if (ad && [self wasLoadTimeLessThanNHoursAgo:4]) {
+            UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
+            [ad presentFromRootViewController:rootController];
+
+          } else {
+            // If you don't have an ad ready, request one.
+              self.appOpenUnitId = appOpenUnitId;
+              [self requestAppOpenAd];
+          }
     });
 }
 
@@ -121,6 +182,31 @@ RCT_EXPORT_METHOD(cache:(int)adType adUnitId:(NSString*)adUnitId) {
 }
 
 #pragma mark Events
+
+#pragma mark - App open events
+
+/// Tells the delegate that the ad failed to present full screen content.
+- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad
+    didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
+  NSLog(@"didFailToPresentFullSCreenCContentWithError");
+  [self sendEventWithName:kEventAppOpenFailedShown body:[error localizedDescription]];
+  //[self requestAppOpenAd];
+
+}
+
+/// Tells the delegate that the ad presented full screen content.
+- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+  NSLog(@"adDidPresentFullScreenContent");
+  [self sendEventWithName:kEventonAppOpenShown body:nil];
+}
+
+/// Tells the delegate that the ad dismissed full screen content.
+- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+  NSLog(@"adDidDismissFullScreenContent");
+  [self sendEventWithName:kEventonAppOpenDismissed body:nil];
+  //[self requestAppOpenAd];
+}
+
 #pragma mark - Interstitial events
 
 /// Tells the delegate an ad request succeeded.
