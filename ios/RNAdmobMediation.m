@@ -197,6 +197,7 @@ RCT_EXPORT_METHOD(cache:(int)adType adUnitId:(NSString*)adUnitId) {
 /// Tells the delegate that the ad presented full screen content.
 - (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   NSLog(@"adDidPresentFullScreenContent");
+  self.appOpenAd = ad;
   [self sendEventWithName:kEventonAppOpenShown body:nil];
 }
 
