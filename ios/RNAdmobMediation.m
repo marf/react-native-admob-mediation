@@ -118,13 +118,13 @@ RCT_EXPORT_MODULE();
 
 #pragma mark exported methods
 
-RCT_EXPORT_METHOD(initialize:(int)appOpenEnabled
+RCT_EXPORT_METHOD(initialize:(int)appOpenAdsEnabled
                   appOpenUnitId:(NSString*)appOpenUnitId) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nullable status){
             [self sendEventWithName:kEventSdkInitialized body:nil];
             
-            if(appOpenEnabled){
+            if(appOpenAdsEnabled){
                 self.appOpenUnitId = appOpenUnitId;
                 [self requestAppOpenAd];
             }
@@ -134,12 +134,9 @@ RCT_EXPORT_METHOD(initialize:(int)appOpenEnabled
 
 RCT_EXPORT_METHOD(showAppOpenAd:(NSString*)appOpenUnitId) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        GADAppOpenAd *ad = self.appOpenAd;
-          self.appOpenAd = nil;
-
-          if (ad && [self wasLoadTimeLessThanNHoursAgo:4]) {
+          if (self.appOpenAd && [self wasLoadTimeLessThanNHoursAgo:4]) {
             UIViewController *rootController = [[UIApplication sharedApplication] keyWindow].rootViewController;
-            [ad presentFromRootViewController:rootController];
+            [self.appOpenAd presentFromRootViewController:rootController];
 
           } else {
             // If you don't have an ad ready, request one.
@@ -197,13 +194,16 @@ RCT_EXPORT_METHOD(cache:(int)adType adUnitId:(NSString*)adUnitId) {
 /// Tells the delegate that the ad presented full screen content.
 - (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
   NSLog(@"adDidPresentFullScreenContent");
-  self.appOpenAd = ad;
+    
   [self sendEventWithName:kEventonAppOpenShown body:nil];
 }
 
 /// Tells the delegate that the ad dismissed full screen content.
-- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad{
   NSLog(@"adDidDismissFullScreenContent");
+    
+  self.appOpenAd = nil;
+      
   [self sendEventWithName:kEventonAppOpenDismissed body:nil];
   //[self requestAppOpenAd];
 }
