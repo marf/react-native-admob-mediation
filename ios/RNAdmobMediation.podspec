@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNAdmobMediation"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "Package to run Admob mediation inside a React Native Project"
   s.description  = <<-DESC
                   RNAdmobMediation
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.static_framework = true
 
-  s.dependency "React"
+  s.dependency "React-Cpre"
   s.dependency 'Google-Mobile-Ads-SDK'
   s.dependency 'GoogleMobileAdsMediationAppLovin'
   s.dependency 'GoogleMobileAdsMediationUnity'
