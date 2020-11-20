@@ -135,7 +135,8 @@ RCT_EXPORT_METHOD(initialize:(int)appOpenAdsEnabled
 RCT_EXPORT_METHOD(showAppOpenAd:(NSString*)appOpenUnitId) {
     dispatch_async(dispatch_get_main_queue(), ^{
           if (self.appOpenAd && [self wasLoadTimeLessThanNHoursAgo:4]) {
-              [self.appOpenAd presentFromRootViewController:RCTPresentedViewController()];
+
+              [self.appOpenAd presentFromRootViewController:RCTKeyWindow().rootViewController];
 
           } else {
             // If you don't have an ad ready, request one.
@@ -149,7 +150,7 @@ RCT_EXPORT_METHOD(show:(int)adType result:(RCTResponseSenderBlock)callback) {
     dispatch_async(dispatch_get_main_queue(), ^{
         if(adType == INTERSTITIAL){
             if (self.interstitial.isReady) {
-              [self.interstitial presentFromRootViewController:RCTPresentedViewController()];
+                [self.interstitial presentFromRootViewController:RCTKeyWindow().rootViewController];
                 callback(@[@YES]);
             } else {
                 callback(@[@NO]);
@@ -158,7 +159,7 @@ RCT_EXPORT_METHOD(show:(int)adType result:(RCTResponseSenderBlock)callback) {
         else if(adType == REWARDED_VIDEO)
         {
             if (self.rewardedAd.isReady) {
-                [self.rewardedAd presentFromRootViewController:RCTPresentedViewController() delegate:self];
+                [self.rewardedAd presentFromRootViewController:RCTKeyWindow().rootViewController delegate:self];
                 callback(@[@YES]);
             } else {
               callback(@[@NO]);
