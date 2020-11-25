@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
-import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -49,7 +48,6 @@ public class AppOpenManager {
         this.module = module;
         //this.application = activity.getApplication();
         //this.application.registerActivityLifecycleCallbacks(this);
-        //ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }
 
     /** Request an ad */
